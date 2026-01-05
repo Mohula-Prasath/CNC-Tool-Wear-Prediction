@@ -1,9 +1,9 @@
-# CNC Tool Wear Prediction Using Machine Learning
+# CNC Tool Wear Prediction Using Machine Learning (Learning & Prototype Project)
 
-This project focuses on predicting tool wear in a CNC machining process using
-sensor data and basic machine learning models. The objective is to estimate
-tool flank wear (VB_mm) over time and generate warnings before the tool reaches
-a critical failure state.
+This project explores CNC tool wear prediction using machine learning with a focus on 
+feature engineering and time-aware modeling. While sensor signals such as vibration and 
+acoustic emission are included, the model’s performance is strongly influenced by a 
+manually engineered pseudo-time feature representing tool usage progression.
 
 The project is intended as a learning-oriented implementation of predictive
 maintenance rather than a full industrial deployment.
@@ -77,14 +77,17 @@ This approach improves temporal sensitivity and stability of predictions.
 
 ---
 
-### 4. Window_ID Concept
+### Window_ID (Pseudo-Time Feature)
+Window_ID is a manually engineered feature that represents the sequential progression of 
+tool usage. Since tool wear generally increases monotonically with machining time, this 
+feature strongly correlates with wear progression.
 
-`Window_ID` acts as a pseudo-time index that helps the model learn the monotonic
-degradation trend of the tool.
+This results in high prediction accuracy but also means:
+- The model relies heavily on temporal progression rather than sensor signals alone
+- Performance may not generalize well to unseen tools or real-time sensor-only scenarios
 
-- Works best when the same tool performs repeated operations.
-- When the tool is replaced, `Window_ID` can be reset.
-- The model can then be retrained for the new tool.
+This design choice was intentional for learning purposes and helped demonstrate the 
+impact of feature dominance in machine learning models.
 
 ---
 
@@ -98,6 +101,9 @@ Model performance is evaluated using:
 Time-series cross-validation is used to avoid data leakage. Results show that
 the sliding window approach performs significantly better than the baseline
 method for this dataset.
+
+The improvement is primarily driven by the inclusion of the Window_ID feature, highlighting 
+how strong temporal proxies can dominate model predictions.
 
 ---
 
